@@ -126,7 +126,6 @@ geometry_msgs::Pose decideGoal()
   // frontiers: frontiers_
   g = get_closest_frontier_to_robot();
 
-  
   ////////////////////////////////////////////////////////////////////
   // TODO END
   ////////////////////////////////////////////////////////////////////
@@ -136,21 +135,28 @@ geometry_msgs::Pose decideGoal()
 geometry_msgs::Pose get_closest_frontier_to_robot(){
     tfScalar closest_dist = 99999.9;
     geometry_msgs::Pose closest_frontier_pose;
-    for (auto const frontier : frontiers_)
+    int closest_id = 0;
+    for (const frontier front : frontiers_)
     {
-        tfScalar tmp_dist = tf::tfDistance(Point2V3(frontier.center_point), Point2V3(robot_pose_.position));
+        // if frontier is just one point, ignore
+        ROS_INFO_STREAM("Frontier #" << front.id << " has size: " << front.size);
+        if (front.size < 4)
+            continue;
+
+        tfScalar tmp_dist = tf::tfDistance(Point2V3(front.center_point), Point2V3(robot_pose_.position));
         if (tmp_dist < closest_dist)
         {
             closest_dist = tmp_dist;
-            closest_frontier_pose.position = frontier.center_point;
-            quaternionTFToMsg( tf::shortestArcQuat(
-                                   Point2V3(frontier.center_point),
-                                   Point2V3(robot_pose_.position)
-                                   ),
-                               closest_frontier_pose.orientation);
+            closest_frontier_pose.position = front.center_point;
+            closest_id = front.id;
+
+            tf::Quaternion angle_between_points = tf::shortestArcQuat(Point2V3(front.center_point),
+                                                                      Point2V3(robot_pose_.position));
+
+            tf::quaternionTFToMsg(angle_between_points, closest_frontier_pose.orientation);
         }
     }
-
+    ROS_INFO_STREAM("Chosen frontier centroid is: " << closest_id << " at :\n" << closest_frontier_pose.position);
     return closest_frontier_pose;
 }
 
@@ -430,11 +436,11 @@ void getAdjacentPoints(int cell, int cells[]){
 bool isFrontier(int cell)
 {
   //check if it is free space
-  if(map_.data[cell] == 0){
+  if(map_.data[cell] == 50){ // was 0, changed this values for poseSLAM
     int adjacentPoints[8];
     getAdjacentPoints(cell,adjacentPoints);
     for(int i = 0; i < 8; ++i)
-      if(adjacentPoints[i] != -1 && map_.data[adjacentPoints[i]] == -1)
+      if(adjacentPoints[i] != -1 && map_.data[adjacentPoints[i]] == 0) // were -1
         return true;
   }
   // If it is obstacle or unknown could not be frontier
@@ -616,8 +622,9 @@ void findFrontiers()
   //check for all cells in the occupancy grid whether or not they are frontier cells
   for(unsigned int i = 0; i < frontier_map_.data.size(); ++i)
   {
-    if(isFrontier(i))
+    if(isFrontier(i)){
       frontier_map_.data[i] = 100;
+    }
     else
       frontier_map_.data[i] = 0;
   }
