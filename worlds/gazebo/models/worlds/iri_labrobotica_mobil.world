@@ -1,0 +1,131 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <!-- Set camera position -->
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>-1.23538 -0.174136 29.3674 -2.2e-05 1.5698 1.57213</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+    </gui>
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <!-- IRI Lab Robotica -->
+    <include>
+      <uri>model://iri_lab_robotica_mobil</uri>
+    </include>
+    <!-- Furniture -->
+
+    <!-- Tables next to mobile robots -->
+    <include>
+      <uri>model://table</uri>
+      <name>taula1</name>
+      <pose>-3 3 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula2</name>
+      <pose>-2.2 3 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula3</name>
+      <pose>-3 1.5 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula4</name>
+      <pose>-2.2 1.5 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <!-- Tables in the middle -->
+    <include>
+      <uri>model://table</uri>
+      <name>taula5</name>
+      <pose>1 3 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula6</name>
+      <pose>1.8 3 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula7</name>
+      <pose>1 1.5 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula8</name>
+      <pose>1.8 1.5 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula9</name>
+      <pose>1 0 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula10</name>
+      <pose>1.8 0 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula11</name>
+      <pose>1 -1.5 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula12</name>
+      <pose>1.8 -1.5 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <!-- Cinematics area -->
+    <include>
+      <uri>model://table</uri>
+      <name>taula13</name>
+      <pose>4 3 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula14</name>
+      <pose>5.15 3.35 0 0 0 0</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula15</name>
+      <pose>5.15 2.55 0 0 0 0</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula16</name>
+      <pose>4 -2 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+    <include>
+      <uri>model://table</uri>
+      <name>taula17</name>
+      <pose>4.8 -2 0 0 0 1.5708</pose>
+      <static>1</static>
+    </include>
+  </world>
+</sdf>

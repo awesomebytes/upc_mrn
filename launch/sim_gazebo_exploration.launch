@@ -1,0 +1,23 @@
+<!-- -->
+<launch>
+
+  <!-- __________ SIM GAZEBO __________ -->
+  <include file="$(find upc_mrn)/launch/sim_gazebo.launch">
+    <arg name="world" value="$(find upc_mrn)/worlds/gazebo/models/worlds/etseib_2pis.world"/>
+    <arg name="rviz_cfg" value="$(find upc_mrn)/config/rviz/exploration.rviz"/>
+  </include>
+
+  <!-- __________ Move_base __________ -->
+  <include file="$(find upc_mrn)/launch/include/move_base_gazebo.launch">
+    <arg name="map" value="true"/>
+    <arg name="navfn" value="true"/>
+  </include>
+
+  <!-- __________ SLAM __________ -->
+  <include file="$(find upc_mrn)/launch/include/gmapping.launch"/>
+
+<!--
+   <node name="exploration" pkg ="upc_mrn" type="exploration" output="screen">
+  </node>-->
+
+</launch>

@@ -1,0 +1,24 @@
+<launch>
+
+  <!-- __________ SIM GAZEBO __________ -->
+  <include file="$(find upc_mrn)/launch/sim_gazebo.launch">
+    <arg name="world" value="$(find upc_mrn)/worlds/gazebo/models/worlds/etseib_2pis.world"/>
+  </include>
+
+  <!-- __________ Move_base __________ -->
+  <include file="$(find upc_mrn)/launch/include/move_base_gazebo.launch">
+    <arg name="map" value="true"/>
+    <arg name="navfn" value="true"/>
+  </include>
+
+  <!--___________ Localization __________ -->
+  <include file="$(find upc_mrn)/launch/include/amcl.launch" />
+
+  <!--___________ Map server __________ -->
+  <node name="map_server"
+    pkg ="map_server"
+    type="map_server"
+    args="$(find upc_mrn)/worlds/etseib_2pis.yaml" 
+    respawn="true" />
+
+</launch>

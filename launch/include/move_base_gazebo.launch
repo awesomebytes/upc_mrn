@@ -1,0 +1,66 @@
+<!-- 
+    ROS navigation stack with velocity smoother and safety (reactive) controller
+-->
+<launch>
+  <include file="$(find turtlebot_navigation)/launch/includes/velocity_smoother.launch.xml"/>
+  <include file="$(find turtlebot_navigation)/launch/includes/safety_controller.launch.xml"/>
+
+  <arg name="odom_topic" default="odom" />
+
+  <!-- global -->
+  <arg name="carrot" default="False" />
+  <arg name="navfn"  default="False" />
+  <arg name="gp"     default="False" />
+
+  
+  <!-- map -->
+  <arg name="map"  default="False" />
+
+
+  <node pkg="move_base" type="move_base" name="move_base" respawn="false" output="screen">
+
+    <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+    
+    <!-- Move base -->
+    <rosparam file="$(find upc_mrn)/config/navigation/move_base_params.yaml" command="load" />
+
+    <!-- LOCAL PLANNER -->
+    <!-- BASE -->
+    <rosparam file="$(find upc_mrn)/config/navigation/base_local_planner_params.yaml" command="load"/>
+
+    <!-- GLOBAL PLANNER -->
+    <!-- CARROT --> 
+    <param if="$(arg carrot)" name="base_global_planner" value="carrot_planner/CarrotPlanner"  />
+    <!-- NAVFN --> 
+    <param if="$(arg navfn)" name="base_global_planner" value="navfn/NavfnROS"  />
+
+    <!-- COSTMAPS -->
+    <!-- Local costmap configs: common + local -->
+    <rosparam file="$(find upc_mrn)/config/navigation/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find upc_mrn)/config/navigation/local_costmap_params.yaml" command="load" />
+        
+    <!-- Global costmap config: common + global -->
+    <rosparam file="$(find upc_mrn)/config/navigation/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam if="$(arg map)" file="$(find upc_mrn)/config/navigation/global_costmap_params_map.yaml" command="load" />
+    <rosparam unless="$(arg map)" file="$(find upc_mrn)/config/navigation/global_costmap_params.yaml" command="load" />
+
+  </node>
+
+
+<!--   <arg name="map_file" default="$(find teo_sim)/data/maps/iri-indoors-lab.yaml"/>
+  <node if="$(arg map)" 
+        name="map_server" 
+        pkg="map_server" 
+        type="map_server" 
+        args="$(arg map_file)" /> -->
+
+<!--   <node name="map_server"
+        pkg ="map_server"
+        type="map_server"
+        args="$(find upc_mrn)/worlds/scenario.yaml" 
+        respawn="false" /> -->
+
+
+
+</launch>

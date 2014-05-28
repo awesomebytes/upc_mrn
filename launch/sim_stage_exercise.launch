@@ -1,0 +1,48 @@
+<!-- -->
+<launch>
+  <param name="/use_sim_time" value="true"/>
+
+  <node name="stageros"
+        pkg ="stage_ros"
+        type="stageros"
+        args="$(find upc_mrn)/worlds/exercise.world"
+        respawn="false" >
+    <param name="base_watchdog_timeout" value="0.3"/>
+    <remap from="/base_scan" to="/scan"/>
+  </node>
+
+  <param name="robot_description" command="cat $(find upc_mrn)/model/turtlebot.urdf" />
+  <!--<param name="robot_description" command="$(find xacro)/xacro.py '$(find upc_mrn)/model/turtlebot.urdf.xacro'" />-->
+
+  <node pkg ="robot_state_publisher"
+        type="robot_state_publisher"
+        name="robot_state_publisher"
+        output="screen">
+    <param name="publish_frequency" type="double" value="5.0" />
+  </node>
+
+  <include file="$(find upc_mrn)/launch/include/move_base_local.launch"/>
+
+  <node name="fake_localization"
+        pkg ="fake_localization"
+        type="fake_localization"
+        respawn="false" >
+    <param name="delta_x"   value="-3.25" />
+    <param name="delta_y"   value="-2.45" />
+    <param name="delta_yaw" value="0.0" />
+    <param name="odom_frame_id"   value="/odom" />
+    <param name="global_frame_id" value="/map" />
+    <param name="base_frame_id"   value="/base_footprint" /> 
+  </node>
+
+<!--  <node name="map_server"
+        pkg ="map_server"
+        type="map_server"
+        args="$(find upc_mrn)/worlds/exercise.yaml" 
+        respawn="false" />-->
+
+  <node name="rviz"
+        pkg ="rviz"
+        type="rviz"
+        args="-d $(find upc_mrn)/config/rviz/practise.rviz" />
+</launch>

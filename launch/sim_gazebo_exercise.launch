@@ -1,0 +1,24 @@
+<!-- GAZEBO Turtlebot Navigation Exercise -->
+
+<launch>
+
+  <!-- __________ SIM GAZEBO __________ -->
+  <include file="$(find upc_mrn)/launch/sim_gazebo.launch">
+	  <arg name="world" value="$(find upc_mrn)/worlds/gazebo/models/worlds/small_room.world"/>
+    <arg name="rviz_cfg" value="$(find upc_mrn)/config/rviz/practise.rviz"/>
+  </include>
+
+  <!-- __________ Move_base __________ -->
+  <include file="$(find upc_mrn)/launch/include/move_base_gazebo.launch">
+    <arg name="map" value="false"/>
+    <arg name="navfn" value="true"/>
+  </include>
+
+  <!-- __________ Fake Localization __________ -->
+  <node pkg="tf"  type="static_transform_publisher"
+    name="map2odom" args="3.25 2.5 0 -1.57079632679 0 0 /map /odom 10"/>
+
+  <!-- __________ MAP __________ --> 
+  <node name="map_server" pkg ="map_server" type="map_server" args="$(find upc_mrn)/worlds/exercise.yaml" respawn="false" />
+
+</launch>

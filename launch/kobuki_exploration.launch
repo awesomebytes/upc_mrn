@@ -1,0 +1,24 @@
+<!-- -->
+<launch>
+
+  <!-- __________ PLATFORM __________ -->
+  <include file="$(find turtlebot_bringup)/launch/minimal.launch"/>
+
+  <!-- __________ SENSOR __________ -->
+  <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+    <arg name="rgb_processing"     value="false" />
+    <arg name="depth_registration" value="false" />
+    <arg name="depth_processing"   value="false" />
+    <arg name="scan_topic" value="/scan" />
+  </include>
+
+  <!-- __________ NAVIGATION __________ -->
+  <include file="$(find upc_mrn)/launch/include/move_base_gazebo.launch">
+    <arg name="map" value="True"/>
+    <arg name="navfn" value="true"/>
+  </include>
+
+  <!-- __________ SLAM __________ -->
+  <include file="$(find upc_mrn)/launch/include/gmapping_robot.launch"/>
+
+</launch>

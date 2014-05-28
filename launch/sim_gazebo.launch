@@ -1,0 +1,42 @@
+<!--  GAZEBO Turtlebot  -->
+
+<launch>
+  
+  <param name="/use_sim_time" value="true"/>
+  
+  <arg name="world"    default="$(find upc_mrn)/worlds/gazebo/models/worlds/iri_labrobotica_mobil.world"/>
+  <arg name="rviz_cfg" default="$(find upc_mrn)/config/rviz/navigation.rviz"/>
+
+  <!-- __________ WORLD __________ -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="use_sim_time" value="true"/>
+    <arg name="debug" value="false"/>
+    <arg name="world_name" value="$(arg world)"/>
+    <arg name="gui" value="False"/>
+  </include>
+
+  <!-- __________ ROBOT __________ -->
+  <include file="$(find turtlebot_gazebo)/launch/includes/$(optenv TURTLEBOT_BASE kobuki).launch.xml">
+    <arg name="base" value="$(optenv TURTLEBOT_BASE kobuki)"/>
+    <arg name="stacks" value="$(optenv TURTLEBOT_STACKS hexagons)"/>
+    <arg name="3d_sensor" value="$(optenv TURTLEBOT_3D_SENSOR kinect)"/>
+  </include>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+
+  <!-- __________ Fake laser __________ -->
+  <node pkg="nodelet" type="nodelet" name="laserscan_nodelet_manager" args="manager"/>
+  <node pkg="nodelet" type="nodelet" name="depthimage_to_laserscan"
+        args="load depthimage_to_laserscan/DepthImageToLaserScanNodelet laserscan_nodelet_manager">
+    <param name="scan_height" value="10"/>
+    <param name="output_frame_id" value="/camera_depth_frame"/>
+    <param name="range_min" value="0.45"/>
+    <remap from="image" to="/camera/depth/image_raw"/>
+    <remap from="scan" to="/scan"/>
+  </node>
+
+  <!-- __________ Visualization __________ -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_cfg)"/>
+</launch>

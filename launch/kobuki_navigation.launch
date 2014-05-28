@@ -1,0 +1,28 @@
+<!-- -->
+<launch>
+
+  <include file="$(find turtlebot_bringup)/launch/minimal.launch"/>
+
+  <include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+    <arg name="rgb_processing"     value="false" />
+    <arg name="depth_registration" value="false" />
+    <arg name="depth_processing"   value="false" />
+    <arg name="scan_topic" value="/scan" />
+  </include>
+
+  <include file="$(find upc_mrn)/launch/include/move_base_gazebo.launch">
+    <arg name="map" value="false"/>
+    <arg name="navfn" value="true"/>
+  </include>
+
+  <node pkg="tf"  type="static_transform_publisher"
+    name="map2odom" args="20.0 10.0 0 0.0 0 0 /map /odom 10"/>
+
+  <node name="map_server" pkg ="map_server" type="map_server" args="$(find upc_mrn)/worlds/empty.yaml" respawn="false" />
+
+<!--  <node name="rviz"
+        pkg ="rviz"
+        type="rviz"
+        args="-d $(find upc_mrn)/config/rviz/practise.rviz" />-->
+
+</launch>

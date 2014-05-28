@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <!-- Set camera position -->
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>-1.23538 -0.174136 29.3674 -2.2e-05 1.5698 1.57213</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+    </gui>
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <!-- Mobile Robotics and Navigation Exercise -->
+    <include>
+      <uri>model://small_room</uri>
+    </include>
+  </world>
+</sdf>
+
+

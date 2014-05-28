@@ -1,0 +1,53 @@
+<!-- -->
+
+<robot name="turtlebot">
+
+  <link name="base_footprint">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.001 0.001 0.001" />
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.017" rpy="0 0 0" />
+      <geometry>
+       <box size="0.001 0.001 0.001" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="base_link">
+    <inertial>
+      <mass value="2" />
+      <origin xyz="0 0 0.0" />
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0"
+        iyy="0.01" iyz="0.0" izz="0.5" />
+    </inertial>
+
+    <visual>
+      <origin xyz=" 0 0 0.2" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.4" radius="0.16" />
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0.0 0.0 0.0308" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.0611632" radius="0.016495"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0.017" rpy="0 0 0" />
+    <parent link="base_footprint"/>
+    <child link="base_link" />
+  </joint>
+  
+</robot>

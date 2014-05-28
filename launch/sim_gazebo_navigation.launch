@@ -1,0 +1,14 @@
+<!-- GAZEBO Turtlebot Navigation without a map -->
+
+<launch>
+
+  <!-- __________ SIM GAZEBO __________ -->
+  <include file="$(find upc_mrn)/launch/sim_gazebo.launch" />
+
+  <!-- __________ Move_base __________ -->
+  <include file="$(find upc_mrn)/launch/include/move_base_gazebo.launch">
+    <arg name="map" value="false"/>
+    <arg name="navfn" value="true"/>
+  </include>
+
+</launch>
